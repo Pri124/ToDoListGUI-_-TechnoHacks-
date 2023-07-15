@@ -1,0 +1,66 @@
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.ArrayList;
+
+public class ToDoListGUI extends JFrame implements ActionListener {
+    private JTextField itemField;
+    private JButton addButton;
+    private JList<String> itemList;
+    private DefaultListModel<String> listModel;
+
+    public ToDoListGUI() {
+        // Set up the JFrame
+        setTitle("To-Do List");
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setSize(700, 800);
+        setLocationRelativeTo(null);
+        setLayout(new BorderLayout());
+
+        // Create the item field and add button
+        itemField = new JTextField();
+        addButton = new JButton("Add");
+        addButton.addActionListener(this);
+
+        JPanel inputPanel = new JPanel();
+        inputPanel.setLayout(new BorderLayout());
+        inputPanel.add(itemField, BorderLayout.CENTER);
+        inputPanel.add(addButton, BorderLayout.EAST);
+
+        add(inputPanel, BorderLayout.NORTH);
+
+        // Create the item list
+        listModel = new DefaultListModel<>();
+        itemList = new JList<>(listModel);
+        JScrollPane scrollPane = new JScrollPane(itemList);
+        add(scrollPane, BorderLayout.CENTER);
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        // Handle button click event
+        if (e.getSource() == addButton) {
+            addItem();
+        }
+    }
+
+    private void addItem() {
+        String item = itemField.getText().trim();
+
+        // Add the item to the list model if it's not empty
+        if (!item.isEmpty()) {
+            listModel.addElement(item);
+            itemField.setText("");
+        }
+    }
+
+    public static void main(String[] args) {
+        // Create and show the GUI
+        SwingUtilities.invokeLater(new Runnable() {
+            public void run() {
+                new ToDoListGUI().setVisible(true);
+            }
+        });
+    }
+}
